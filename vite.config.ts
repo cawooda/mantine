@@ -11,5 +11,5 @@ import react from '@vitejs/plugin-react';
 // - Customizable theme system
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ jsxImportSource: 'react' })],
 });

@@ -1,23 +1,8 @@
-import {
-  MantineProvider,
-  Container,
-  Box,
-  Title,
-  Text,
-  Group,
-  Button,
-} from '@mantine/core';
-import AppContainer from './components/AppContainer';
-import Menu from './components/Menu';
-
-import './App.css';
-
-// Mantine App Component
-// This component demonstrates Mantine UI usage with:
-// - MantineProvider for theme configuration and dark mode support
-// - Pre-built components: Container, Box, Title, Text, Group, Button
-// - Responsive design with Mantine's breakpoint system
-// - Integrated theme switching capability
+import { AppShell } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
+import { useState } from 'react';
+import { Outlet } from 'react-router';
+import AppMenu from './components/AppMenu';
 
 const mantineTheme = {
   primaryColor: 'blue',
@@ -28,26 +13,29 @@ const mantineTheme = {
 };
 
 export default function App() {
+  const [opened, setOpened] = useState(false);
   return (
     <MantineProvider theme={mantineTheme}>
-      <AppContainer>
-        <Menu
-          items={[
-            { id: 1, name: 'about' },
-            { id: 2, name: 'contact' },
-          ]}
-        />
-        <Box component="article" p="lg">
-          <Title order={1}>Welcome to your Mantine App</Title>
-          <Text mt="md" size="lg">
-            A modern React app with TypeScript and Mantine UI components.
-          </Text>
-          <Group mt="lg">
-            <Button variant="filled">Get Started</Button>
-            <Button variant="outline">Learn More</Button>
-          </Group>
-        </Box>
-      </AppContainer>
+      <AppShell
+        padding="md"
+        header={{ height: 60 }}
+        navbar={{
+          width: 300,
+          breakpoint: 'sm',
+          collapsed: { mobile: !opened },
+        }}
+      >
+        <AppShell.Header>
+          {/* <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" /> */}
+          <AppMenu opened={opened} onClick={() => setOpened(!opened)} />
+        </AppShell.Header>
+
+        <AppShell.Navbar></AppShell.Navbar>
+
+        <AppShell.Main>
+          <Outlet />
+        </AppShell.Main>
+      </AppShell>
     </MantineProvider>
   );
 }
