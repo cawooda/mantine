@@ -1,8 +1,9 @@
-import { AppShell } from '@mantine/core';
+import { AppShell, Burger } from '@mantine/core';
 import { MantineProvider } from '@mantine/core';
 import { useState } from 'react';
 import { Outlet } from 'react-router';
 import AppMenu from './components/AppMenu';
+import { useDisclosure } from '@mantine/hooks';
 
 const mantineTheme = {
   primaryColor: 'blue',
@@ -13,7 +14,8 @@ const mantineTheme = {
 };
 
 export default function App() {
-  const [opened, setOpened] = useState(false);
+  const [user, setUser] = useState({ loggedIn: false });
+  const [opened, { toggle }] = useDisclosure(false);
   return (
     <MantineProvider theme={mantineTheme}>
       <AppShell
@@ -26,12 +28,14 @@ export default function App() {
         }}
       >
         <AppShell.Header>
-          {/* <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" /> */}
-          <AppMenu opened={opened} onClick={() => setOpened(!opened)} />
+          <AppMenu
+            user={user}
+            setUser={setUser}
+            opened={opened}
+            onClick={toggle}
+          />
         </AppShell.Header>
-
         <AppShell.Navbar></AppShell.Navbar>
-
         <AppShell.Main>
           <Outlet />
         </AppShell.Main>

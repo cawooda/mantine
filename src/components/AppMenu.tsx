@@ -1,25 +1,29 @@
-import { Menu, Button } from '@mantine/core';
+import { Menu, Button, PopoverTarget, PopoverDropdown } from '@mantine/core';
 import { Link } from 'react-router';
+import User from '../Types';
 
 function AppMenu({
+  user,
+  setUser,
   opened,
   onClick,
 }: {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   opened: boolean | false;
   onClick: () => void;
 }) {
   return (
-    <Menu width={200} trigger={'hover'} opened={opened} position="bottom-start">
+    <Menu withArrow={true} width={200} opened={opened} position="bottom-start">
       <Menu.Target>
-        <Button onClick={onClick}>GO</Button>
+        <Button onClick={onClick}> &gt; </Button>
       </Menu.Target>
 
       <Menu.Dropdown>
         <Menu.Item onClick={onClick} component={Link} to="/dashboard">
           Dashboard
         </Menu.Item>
-
-        <Menu.Sub>
+        <Menu.Sub openDelay={120} closeDelay={150}>
           <Menu.Sub.Target>
             <Menu.Sub.Item onClick={onClick}>Features</Menu.Sub.Item>
           </Menu.Sub.Target>
@@ -47,7 +51,25 @@ function AppMenu({
               Password and Security
             </Menu.Item>
           </Menu.Sub.Dropdown>
-          <Menu.Item>Logout</Menu.Item>
+          <Menu.Item>
+            {user?.loggedIn ? (
+              <Button
+                onClick={() =>
+                  setUser((prev: User) => ({ ...prev, loggedIn: false }))
+                }
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                onClick={() =>
+                  setUser((prev: User) => ({ ...prev, loggedIn: true }))
+                }
+              >
+                Login
+              </Button>
+            )}
+          </Menu.Item>
         </Menu.Sub>
       </Menu.Dropdown>
     </Menu>
