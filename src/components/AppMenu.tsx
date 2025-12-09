@@ -1,6 +1,6 @@
 import { Menu, Button, PopoverTarget, PopoverDropdown } from '@mantine/core';
 import { Link } from 'react-router';
-import User from '../Types';
+import type { User } from '../Types';
 
 function AppMenu({
   user,
